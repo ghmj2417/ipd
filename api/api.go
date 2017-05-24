@@ -66,7 +66,12 @@ func ipToDecimal(ip net.IP) *big.Int {
 func ipFromRequest(header string, r *http.Request) (net.IP, error) {
 	remoteIP := r.Header.Get(header)
 	if remoteIP == "" {
-		host, _, err := net.SplitHostPort(r.RemoteAddr)
+    xforwardedfor := r.Header.Get("X-Forwarded-For")
+    if xforwardedfor == "" {
+      host, _, err := net.SplitHostPort(r.RemoteAddr)
+    } else {
+      host = xforwardedfor
+    }
 		if err != nil {
 			return nil, err
 		}

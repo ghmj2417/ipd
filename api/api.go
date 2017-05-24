@@ -69,7 +69,8 @@ func ipFromRequest(header string, r *http.Request) (net.IP, error) {
     host := ""
     xforwardedfor := r.Header.Get("X-Forwarded-For")
     if xforwardedfor == "" {
-      host, _, err = net.SplitHostPort(r.RemoteAddr)
+      var err error
+      host, err = net.SplitHostPort(r.RemoteAddr)
       if err != nil {
         return nil, err
       }

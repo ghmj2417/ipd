@@ -66,17 +66,17 @@ func ipToDecimal(ip net.IP) *big.Int {
 func ipFromRequest(header string, r *http.Request) (net.IP, error) {
 	remoteIP := r.Header.Get(header)
 	if remoteIP == "" {
-      host := ""
-      xforwardedfor := r.Header.Get("X-Forwarded-For")
-      if xforwardedfor == "" {
-        var err error
-        host, _, err = net.SplitHostPort(r.RemoteAddr)
-        if err != nil {
-          return nil, err
-        }
-      } else {
-        host = xforwardedfor
+    host := ""
+    xforwardedfor := r.Header.Get("X-Forwarded-For")
+    if xforwardedfor == "" {
+      var err error
+      host, _, err = net.SplitHostPort(r.RemoteAddr)
+      if err != nil {
+        return nil, err
       }
+    } else {
+      host = xforwardedfor
+    }
 		remoteIP = host
 	}
 	ip := net.ParseIP(remoteIP)
